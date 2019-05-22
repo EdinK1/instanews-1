@@ -1,0 +1,20 @@
+{
+  "name": "instanews",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shwilliam/instanews.git"
+  },
+  "keywords": [
+    "news"
+  ],
+  "author": "William L <w-lindvall@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shwilliam/instanews/issues"
+  },
+  "homepage": "https://github.com/shwilliam/instanews#readme"
+}
