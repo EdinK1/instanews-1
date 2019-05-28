@@ -5,6 +5,7 @@ const browserSync = require('browser-sync').create()
 const sass = require('gulp-sass')
 const autoprefixer = require('gulp-autoprefixer')
 const cssnano = require('gulp-cssnano')
+const prettyError = require('gulp-prettyerror')
 
 function initBrowser() {
   console.log('Initializing browser sync')
@@ -39,6 +40,7 @@ function scss() {
   console.log('Compiling SCSS')
   return gulp
     .src('src/scss/index.scss')
+    .pipe(prettyError())
     .pipe(sass())
     .pipe(
       autoprefixer({
@@ -56,7 +58,6 @@ function watchFiles() {
     ['src/**', 'public/**'],
     gulp.series(public, scripts, scss, reloadBrowser),
   )
-  return gulp.parallel(watchSrc, watchPublic)
 }
 
 gulp.task('build', gulp.series(public, scripts, scss))
