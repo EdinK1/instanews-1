@@ -1,0 +1,14 @@
+.site {
+  background-color: $black;
+  color: $text-primary;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.site__footer {
+  position: absolute;
+  bottom: 2rem;
+}

@@ -7,16 +7,30 @@
   <title>instanews</title>
   <link rel="stylesheet" href="./css/index.min.css">
 </head>
-<body>
-  <header>
-    <h1>hello world!</h1>
+<body class="site">
+  <header class="site__header">
+    <h1 class="sr-only">instanews</h1>
+    <img class="site__logo" src="./images/nyt-logo.svg" label="New York Times logo">
   </header>
 
   <main>
-    <img src="./images/ajax-loader.gif" alt="Loader">
+    <form class="section-form" id="section-form">
+      <label class="section-form__label" for="section-select">
+        Choose a section:
+      </label>
+      <!-- TODO: native autocomplete -->
+      <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete -->
+      <select class="section-form__select" id="section-select" required autofocus>
+        <option value="">
+          Sections...
+        </option>
+      </select>
+    </form>
   </main>
 
-  <footer></footer>
+  <footer class="site__footer">
+    &#169; Copyright 2019 INSTANEWS
+  </footer>
 
   <script src="./js/index.min.js"></script>
 </body>
