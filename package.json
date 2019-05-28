@@ -1,20 +1,29 @@
 {
   "name": "instanews",
+  "author": "William L <w-lindvall@outlook.com>",
+  "description": "",
+  "keywords": [
+    "news"
+  ],
   "version": "0.1.0",
   "private": true,
-  "description": "",
-  "scripts": {},
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shwilliam/instanews.git"
   },
-  "keywords": [
-    "news"
-  ],
-  "author": "William L <w-lindvall@outlook.com>",
-  "license": "MIT",
+  "homepage": "https://github.com/shwilliam/instanews#readme",
   "bugs": {
     "url": "https://github.com/shwilliam/instanews/issues"
   },
-  "homepage": "https://github.com/shwilliam/instanews#readme"
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp build"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.5",
+    "gulp": "^4.0.2",
+    "gulp-rename": "^1.4.0",
+    "gulp-terser": "^1.2.0"
+  }
 }
