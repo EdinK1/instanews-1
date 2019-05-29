@@ -1,3 +1,11 @@
+/* deps */
 node_modules
+
+/* mockups */
 design
+
+/* built files */
 dist
+
+/* env variables */
+secret*

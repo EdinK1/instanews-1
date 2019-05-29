@@ -1,6 +1,11 @@
 $(() => {
+  // DOM els
   const $sectionSelect = $('#section-select')
-  const sections = [
+
+  // consts
+  const NYT_KEY =
+    (window.process && window.process.env.NYT_KEY) || window.SECRET.NYT_KEY
+  const SECTIONS = [
     'arts',
     'automobiles',
     'books',
@@ -29,7 +34,19 @@ $(() => {
     'world',
   ]
 
-  sections.forEach(s =>
+  // fill select options
+  SECTIONS.forEach(s =>
     $sectionSelect.append(`<option value="${s}">${s}</option>`),
   )
+
+  // TODO: listen for select
+  const section = 'science'
+  const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${section}.json?api-key=${NYT_KEY}`
+
+  // fetch stories
+  $.ajax(topStoriesUrl)
+    .done(console.log)
+    .fail(console.error)
+
+  // TODO: populate dom
 })
