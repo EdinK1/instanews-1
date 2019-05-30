@@ -36,7 +36,12 @@ $(() => {
 
   // fill select options
   SECTIONS.forEach(s =>
-    $sectionSelect.append(`<option value="${s}">${s}</option>`),
+    $sectionSelect.append(
+      `<option value="${s}">
+        // capitalize
+        ${s.substr(0, 1).toUpperCase() + s.substr(1)}
+      </option>`,
+    ),
   )
 
   // TODO: listen for select
