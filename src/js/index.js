@@ -45,28 +45,50 @@ $(() => {
     ),
   )
 
-  // TODO: listen for select
-  const section = 'science'
-  const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${section}.json?api-key=${NYT_KEY}`
-
-  const $storyTemplate = document.getElementsByTagName('template')[0]
+  const $containerTemplate = document.getElementById('story-grid-template')
+  const containerTemplateContent = document.importNode(
+    $containerTemplate.content,
+    true,
+  )
   // TODO: check for template support
+  const $storyList = containerTemplateContent.querySelector('ul')
+
+  const $storyTemplate = document.getElementById('story-item-template')
 
   // fetch stories
-  $sectionSelect.on('change', () =>
-    $.ajax(topStoriesUrl)
-      .done(({results}) => {
-        $main.empty()
-        results.forEach(({abstract, title, short_url, multimedia}) => {
-          const $template = document.importNode($storyTemplate.content, true)
-          $template.querySelector('a').setAttribute('href', short_url)
-          $template.querySelector('h2').innerText = title
-          $template.querySelector('p').innerText = abstract
-          $template.querySelector('img').setAttribute('src', multimedia[0].url)
+  $sectionSelect.on('change', ({target}) => {
+    const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${
+      target.value
+    }.json?api-key=${NYT_KEY}`
 
-          $main.append($template)
+    return $.ajax(topStoriesUrl)
+      .done(({results}) => {
+        // empty <main>
+        $main.empty()
+
+        // iterate over stories
+        results.forEach(({abstract, title, short_url, multimedia}) => {
+          // import story template
+          const templateContent = document.importNode(
+            $storyTemplate.content,
+            true,
+          )
+
+          // fill w res data
+          templateContent.querySelector('a').setAttribute('href', short_url)
+          templateContent.querySelector('h2').innerText = title
+          templateContent.querySelector('p').innerText = abstract
+          templateContent
+            .querySelector('img')
+            .setAttribute('src', multimedia[0].url)
+
+          // append to container
+          $storyList.append(templateContent)
         })
+
+        // append to DOM
+        $main.append($storyList)
       })
-      .fail(console.error),
-  )
+      .fail(console.error)
+  })
 })

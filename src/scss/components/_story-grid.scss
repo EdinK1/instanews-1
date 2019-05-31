@@ -1,0 +1,10 @@
+#story-grid-template {
+  display: grid;
+}
+
+#story-item-template {
+  li {
+    list-style: none;
+    display: inline-block;
+  }
+}
