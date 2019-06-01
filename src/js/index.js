@@ -2,8 +2,10 @@ $(() => {
   // TODO: check for section passed as query string
 
   // DOM els
-  const $sectionSelect = $('#section-select')
+  const $body = $('body')
+  const $header = $('header')
   const $main = $('main')
+  const $sectionSelect = $('#section-select')
 
   // consts
   const NYT_KEY =
@@ -57,17 +59,20 @@ $(() => {
   $storyList.classList.add('story_list')
   const $storyTemplate = document.getElementById('story-item-template')
 
+  // lock scroll
+  $body.addClass('no-scroll')
+
   // fetch stories
   $sectionSelect.on('change', ({target}) => {
+    // empty <main>
+    $main.empty()
+
     const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${
       target.value
     }.json?api-key=${NYT_KEY}`
 
     return $.ajax(topStoriesUrl)
       .done(({results}) => {
-        // empty <main>
-        $main.empty()
-
         // iterate over stories
         results.forEach(({abstract, title, short_url, multimedia}) => {
           // only render if story has img
@@ -92,6 +97,12 @@ $(() => {
 
         // append to DOM
         $main.append($storyList)
+
+        // shrink header
+        $header.addClass('closed')
+
+        // enable scroll
+        $body.removeClass('no-scroll')
       })
       .fail(console.error)
   })
