@@ -71,6 +71,9 @@ $(() => {
 
         // iterate over stories
         results.forEach(({abstract, title, short_url, multimedia}) => {
+          // only render if story has img
+          if (!multimedia[0]) return
+
           // import story template
           const templateContent = document.importNode(
             $storyTemplate.content,
