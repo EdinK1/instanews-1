@@ -49,8 +49,10 @@ $(() => {
     ),
   )
 
+  if (!document.createElement('template').content)
+    alert('Please use a browser that supports HTML templates.')
+
   const $containerTemplate = document.getElementById('story-grid-template')
-  // TODO: check for template support
   const containerTemplateContent = $containerTemplate.content.cloneNode(true)
 
   const $storyList = containerTemplateContent.querySelector('ul')
