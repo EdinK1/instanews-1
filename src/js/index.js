@@ -3,9 +3,22 @@ $(() => {
 
   // DOM els
   const $body = $('body')
-  const $header = $('header')
-  const $main = $('main')
+  const $header = $body.find('header')
+  const $main = $body.find('main')
   const $sectionSelect = $('#section-select')
+
+  // templates
+  if (!document.createElement('template').content)
+    alert('Please use a browser that supports HTML templates.')
+
+  const $loaderTemplate = document.getElementById('loader-template')
+  const loaderTemplateContent = $loaderTemplate.content.cloneNode(true)
+  const $loader = loaderTemplateContent.querySelector('.loader')
+  const $storyTemplate = document.getElementById('story-item-template')
+  const $containerTemplate = document.getElementById('story-grid-template')
+  const containerTemplateContent = $containerTemplate.content.cloneNode(true)
+  const $storyList = containerTemplateContent.querySelector('ul')
+  $storyList.classList.add('story_list')
 
   // consts
   const NYT_KEY =
@@ -49,21 +62,14 @@ $(() => {
     ),
   )
 
-  if (!document.createElement('template').content)
-    alert('Please use a browser that supports HTML templates.')
-
-  const $containerTemplate = document.getElementById('story-grid-template')
-  const containerTemplateContent = $containerTemplate.content.cloneNode(true)
-
-  const $storyList = containerTemplateContent.querySelector('ul')
-  $storyList.classList.add('story_list')
-  const $storyTemplate = document.getElementById('story-item-template')
-
-  // lock scroll
   $body.addClass('no-scroll')
 
   $sectionSelect.on('change', ({target}) => {
     if (!target.value) return
+
+    $body.addClass('no-scroll')
+    $main.empty()
+    $main.append($loader)
 
     const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${
       target.value
@@ -76,7 +82,6 @@ $(() => {
         results.forEach(({abstract, title, short_url, multimedia}) => {
           if (!multimedia[0]) return
 
-          // import story template
           const templateContent = $storyTemplate.content.cloneNode(true)
           const $story = templateContent.querySelector('li')
 
@@ -87,12 +92,11 @@ $(() => {
           $storyList.append($story)
         })
 
+        $main.empty()
         $main.append($storyList)
 
-        // shrink header
         $header.addClass('closed')
 
-        // enable scroll
         $body.removeClass('no-scroll')
       })
       .fail(console.error)
