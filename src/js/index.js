@@ -54,8 +54,7 @@ $(() => {
   )
   // TODO: check for template support
   const $storyList = containerTemplateContent.querySelector('ul')
-  $storyList.classList.add('story__list')
-
+  $storyList.classList.add('story_list')
   const $storyTemplate = document.getElementById('story-item-template')
 
   // fetch stories
@@ -80,7 +79,6 @@ $(() => {
             true,
           )
           const $story = templateContent.querySelector('li')
-          $story.classList.add('story__item')
 
           // fill w res data
           $story.querySelector('a').setAttribute('href', short_url)
