@@ -1,4 +1,6 @@
 $(() => {
+  // TODO: check for section passed as query string
+
   // DOM els
   const $sectionSelect = $('#section-select')
   const $main = $('main')
@@ -52,6 +54,7 @@ $(() => {
   )
   // TODO: check for template support
   const $storyList = containerTemplateContent.querySelector('ul')
+  $storyList.classList.add('story__list')
 
   const $storyTemplate = document.getElementById('story-item-template')
 
@@ -73,17 +76,17 @@ $(() => {
             $storyTemplate.content,
             true,
           )
+          const $story = templateContent.querySelector('li')
+          $story.classList.add('story__item')
 
           // fill w res data
-          templateContent.querySelector('a').setAttribute('href', short_url)
-          templateContent.querySelector('h2').innerText = title
-          templateContent.querySelector('p').innerText = abstract
-          templateContent
-            .querySelector('img')
-            .setAttribute('src', multimedia[0].url)
+          $story.querySelector('a').setAttribute('href', short_url)
+          $story.querySelector('h2').innerText = title
+          $story.querySelector('p').innerText = abstract
+          $story.style.backgroundImage = `url('${multimedia[0].url}')`
 
           // append to container
-          $storyList.append(templateContent)
+          $storyList.append($story)
         })
 
         // append to DOM
