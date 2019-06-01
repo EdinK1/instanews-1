@@ -11,10 +11,19 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     transition: min-height 1s ease-in-out;
 
     &.closed {
       min-height: 0;
+    }
+
+    @include tablet {
+      flex-direction: row;
+    }
+
+    @include desktop {
+      padding-right: 50vw;
     }
   }
 
