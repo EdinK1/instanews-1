@@ -1,5 +1,9 @@
+import test from '../data/sections'
+
 $(() => {
   // TODO: check for section passed as query string
+
+  console.log(test)
 
   // DOM els
   const $body = $('body')
