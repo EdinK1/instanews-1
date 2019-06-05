@@ -79,18 +79,21 @@ $(() => {
       .done(({results}) => {
         $storyList.innerText = ''
 
-        results.forEach(({abstract, title, short_url, multimedia}) => {
-          if (!multimedia[0]) return
+        results
+          // has image
+          .filter(s => s.multimedia[0])
+          // limit to 12 stories
+          .slice(0, 12)
+          .forEach(({abstract, title, short_url, multimedia}) => {
+            const templateContent = $storyTemplate.content.cloneNode(true)
+            const $story = templateContent.querySelector('li')
 
-          const templateContent = $storyTemplate.content.cloneNode(true)
-          const $story = templateContent.querySelector('li')
-
-          $story.querySelector('a').setAttribute('href', short_url)
-          $story.querySelector('h2').innerText = title
-          $story.querySelector('p').innerText = abstract
-          $story.style.backgroundImage = `url('${multimedia[0].url}')`
-          $storyList.append($story)
-        })
+            $story.querySelector('a').setAttribute('href', short_url)
+            $story.querySelector('h2').innerText = title
+            $story.querySelector('p').innerText = abstract
+            $story.style.backgroundImage = `url('${multimedia[0].url}')`
+            $storyList.append($story)
+          })
 
         $main.empty()
         $main.append($storyList)
