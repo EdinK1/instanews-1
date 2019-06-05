@@ -1,7 +1,13 @@
 @import '../../fonts/stylesheet.css';
 
-html {
+@mixin open-sans-light {
   font-family: 'Open Sans';
   font-weight: 300;
   font-style: normal;
+}
+
+html {
+  @include open-sans-light;
+  font-size: $text-size;
+  color: $text-primary;
 }
