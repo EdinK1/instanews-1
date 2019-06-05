@@ -1,60 +1,24 @@
-import test from '../data/sections'
+import cloneTemplate from './utils/cloneTemplate'
+import SECTIONS from '../data/sections'
+const NYT_KEY =
+  (window.process && window.process.env.NYT_KEY) || window.SECRET.NYT_KEY
 
+// DOM ready
 $(() => {
-  // TODO: check for section passed as query string
-
-  console.log(test)
-
-  // DOM els
   const $body = $('body')
   const $header = $body.find('header')
   const $main = $body.find('main')
   const $sectionSelect = $('#section-select')
 
-  // templates
+  // check for template compatibility
   if (!document.createElement('template').content)
     alert('Please use a browser that supports HTML templates.')
 
-  const $loaderTemplate = document.getElementById('loader-template')
-  const loaderTemplateContent = $loaderTemplate.content.cloneNode(true)
-  const $loader = loaderTemplateContent.querySelector('.loader')
-  const $storyTemplate = document.getElementById('story-item-template')
-  const $containerTemplate = document.getElementById('story-grid-template')
-  const containerTemplateContent = $containerTemplate.content.cloneNode(true)
-  const $storyList = containerTemplateContent.querySelector('ul')
-  $storyList.classList.add('story_list')
+  const loader = cloneTemplate('loader-template', '.loader')
+  const storyList = cloneTemplate('story-grid-template', 'ul')
+  storyList.classList.add('story_list')
 
-  // consts
-  const NYT_KEY =
-    (window.process && window.process.env.NYT_KEY) || window.SECRET.NYT_KEY
-  const SECTIONS = [
-    'arts',
-    'automobiles',
-    'books',
-    'business',
-    'fashion',
-    'food',
-    'health',
-    'home',
-    'insider',
-    'magazine',
-    'movies',
-    'national',
-    'nyregion',
-    'obituaries',
-    'opinion',
-    'politics',
-    'realestate',
-    'science',
-    'sports',
-    'sundayreview',
-    'technology',
-    'theater',
-    'tmagazine',
-    'travel',
-    'upshot',
-    'world',
-  ]
+  // TODO: check for section passed as query string
 
   // fill select options
   SECTIONS.forEach(s =>
@@ -71,41 +35,40 @@ $(() => {
   $sectionSelect.on('change', ({target}) => {
     if (!target.value) return
 
+    storyList.remove()
     $body.addClass('no-scroll')
-    $main.empty()
-    $main.append($loader)
+    $main.append(loader)
 
-    const topStoriesUrl = `https://api.nytimes.com/svc/topstories/v2/${
-      target.value
-    }.json?api-key=${NYT_KEY}`
+    return (
+      $.ajax(
+        `https://api.nytimes.com/svc/topstories/v2/${
+          target.value
+        }.json?api-key=${NYT_KEY}`,
+      )
+        .done(({results}) => {
+          storyList.innerText = ''
 
-    return $.ajax(topStoriesUrl)
-      .done(({results}) => {
-        $storyList.innerText = ''
+          results
+            // has image
+            .filter(s => s.multimedia[0])
+            // limit to 12 stories
+            .slice(0, 12)
+            .forEach(({abstract, title, short_url, multimedia}) => {
+              const story = cloneTemplate('story-item-template', 'li')
+              story.querySelector('a').setAttribute('href', short_url)
+              story.querySelector('h2').innerText = title
+              story.querySelector('p').innerText = abstract
+              story.style.backgroundImage = `url('${multimedia[0].url}')`
+              storyList.append(story)
+            })
 
-        results
-          // has image
-          .filter(s => s.multimedia[0])
-          // limit to 12 stories
-          .slice(0, 12)
-          .forEach(({abstract, title, short_url, multimedia}) => {
-            const templateContent = $storyTemplate.content.cloneNode(true)
-            const $story = templateContent.querySelector('li')
-
-            $story.querySelector('a').setAttribute('href', short_url)
-            $story.querySelector('h2').innerText = title
-            $story.querySelector('p').innerText = abstract
-            $story.style.backgroundImage = `url('${multimedia[0].url}')`
-            $storyList.append($story)
-          })
-
-        $main.empty()
-        $main.append($storyList)
-
-        $header.addClass('closed')
-
-        $body.removeClass('no-scroll')
-      })
-      .fail(console.error)
+          loader.remove()
+          $main.append(storyList)
+          $header.addClass('closed')
+          $body.removeClass('no-scroll')
+        })
+        // TODO: show error
+        .fail(console.error)
+    )
   })
 })
