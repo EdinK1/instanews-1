@@ -1,4 +1,6 @@
 import cloneTemplate from './utils/cloneTemplate'
+import capitalize from './utils/capitalize'
+
 import SECTIONS from '../data/sections'
 const NYT_KEY =
   (window.process && window.process.env.NYT_KEY) || window.SECRET.NYT_KEY
@@ -11,6 +13,7 @@ $(() => {
   const $sectionSelect = $('#section-select')
 
   // check for template compatibility
+  // TODO: fallback
   if (!document.createElement('template').content)
     alert('Please use a browser that supports HTML templates.')
 
@@ -23,9 +26,8 @@ $(() => {
   // fill select options
   SECTIONS.forEach(s =>
     $sectionSelect.append(
-      // ensure capitalized
       `<option value="${s}">
-        ${s.substr(0, 1).toUpperCase() + s.substr(1)}
+        ${capitalize(s)}
       </option>`,
     ),
   )
