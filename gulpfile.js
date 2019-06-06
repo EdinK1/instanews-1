@@ -6,6 +6,7 @@ const streamify = require('gulp-streamify')
 const uglify = require('gulp-uglify')
 const rename = require('gulp-rename')
 const sass = require('gulp-sass')
+const sourcemaps = require('gulp-sourcemaps')
 const autoprefixer = require('gulp-autoprefixer')
 const cssnano = require('gulp-cssnano')
 const prettyError = require('gulp-prettyerror')
@@ -54,6 +55,7 @@ function scss() {
   return gulp
     .src('src/scss/index.scss')
     .pipe(prettyError())
+    .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(
       autoprefixer({
@@ -62,6 +64,7 @@ function scss() {
     )
     .pipe(cssnano())
     .pipe(rename('index.min.css'))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/css'))
 }
 
