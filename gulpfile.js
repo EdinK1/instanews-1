@@ -2,7 +2,8 @@ const gulp = require('gulp')
 const browserify = require('browserify')
 const babelify = require('babelify')
 const sourceStream = require('vinyl-source-stream')
-const terser = require('gulp-terser')
+const streamify = require('gulp-streamify')
+const uglify = require('gulp-uglify')
 const rename = require('gulp-rename')
 const sass = require('gulp-sass')
 const autoprefixer = require('gulp-autoprefixer')
@@ -27,23 +28,20 @@ function reloadBrowser(done) {
 
 function scripts() {
   console.log('Preparing scripts')
-  return (
-    browserify({
-      entries: './src/js/index.js',
-      debug: true,
-    })
-      .transform(
-        babelify.configure({
-          presets: ['@babel/preset-env'],
-        }),
-      )
-      .bundle()
-      .pipe(sourceStream('index.js'))
-      // FIXME: terser doesn't support streams
-      // .pipe(terser({toplevel: true}))
-      .pipe(rename({extname: '.min.js'}))
-      .pipe(gulp.dest('./dist/js'))
-  )
+  return browserify({
+    entries: './src/js/index.js',
+    debug: true,
+  })
+    .transform(
+      babelify.configure({
+        presets: ['@babel/preset-env'],
+      }),
+    )
+    .bundle()
+    .pipe(sourceStream('index.js'))
+    .pipe(streamify(uglify()))
+    .pipe(rename({extname: '.min.js'}))
+    .pipe(gulp.dest('./dist/js'))
 }
 
 function public() {
