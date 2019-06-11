@@ -8,6 +8,6 @@
 
 html {
   @include open-sans-light;
-  font-size: $text-size;
-  color: $text-primary;
+  font-size: $font-size;
+  color: $text;
 }

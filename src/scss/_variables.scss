@@ -1,11 +1,19 @@
-// ui colors
-$black: #000;
+// colors
+$ui: #000;
+$text: #fff;
+$text-light: #c2c2c2;
+
+// fonts
+$font-size: 16px;
 
 // breakpoints
 $tablet-width: 600px;
 $desktop-width: 1240px;
 
-// fonts
-$text-primary: #fff;
-$text-size: 16px;
-$text-font: 'Open Sans';
+// spacing
+$pad-s: 1rem;
+$pad: 1.8rem;
+$pad-l: 3.4rem;
+
+// sizes
+$footer: 90px;

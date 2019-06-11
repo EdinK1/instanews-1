@@ -1,0 +1,9 @@
+.footer {
+  color: $text-light;
+  margin: $pad-s $pad-l;
+  height: $footer;
+
+  @include desktop {
+    margin-right: auto;
+  }
+}

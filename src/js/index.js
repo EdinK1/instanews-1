@@ -3,7 +3,8 @@ import capitalize from './utils/capitalize'
 
 import SECTIONS from '../data/sections'
 const NYT_KEY =
-  (window.process && window.process.env.NYT_KEY) || window.SECRET.NYT_KEY
+  (window.process && window.process.env.NYT_KEY) ||
+  window.SECRET.NYT_KEY
 
 // DOM ready
 $(() => {
@@ -37,8 +38,6 @@ $(() => {
   $sectionSelect.on('change', ({target}) => {
     if (!target.value) return
 
-    storyList.remove()
-    $body.addClass('no-scroll')
     $main.append(loader)
 
     return (
@@ -48,7 +47,7 @@ $(() => {
         }.json?api-key=${NYT_KEY}`,
       )
         .done(({results}) => {
-          storyList.innerText = ''
+          storyList.innerText = null
 
           results
             // has image
@@ -60,7 +59,9 @@ $(() => {
               story.querySelector('a').setAttribute('href', short_url)
               story.querySelector('h2').innerText = title
               story.querySelector('p').innerText = abstract
-              story.style.backgroundImage = `url('${multimedia[0].url}')`
+              story.style.backgroundImage = `url('${
+                multimedia[0].url
+              }')`
               storyList.append(story)
             })
 

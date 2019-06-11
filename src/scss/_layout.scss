@@ -1,12 +1,8 @@
 body {
-  background-color: $black;
+  background-color: $ui;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-
-  main {
-    flex-grow: 1;
-  }
 
   footer {
     text-align: center;
