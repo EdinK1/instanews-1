@@ -7,5 +7,3 @@ design
 /* built files */
 dist
 
-/* env variables */
-secret*

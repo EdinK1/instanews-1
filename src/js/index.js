@@ -1,10 +1,8 @@
+import SECTIONS from '../constants/sections'
+import NYT_KEY from '../constants/nyt-key'
+
 import cloneTemplate from './utils/cloneTemplate'
 import capitalize from './utils/capitalize'
-
-import SECTIONS from '../data/sections'
-const NYT_KEY =
-  (window.process && window.process.env.NYT_KEY) ||
-  window.SECRET.NYT_KEY
 
 // DOM ready
 $(() => {
