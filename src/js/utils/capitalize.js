@@ -1,1 +1,1 @@
-export default s => s.substr(0, 1).toUpperCase() + s.substr(1)
+export default s => s[0].toUpperCase() + s.substring(1)

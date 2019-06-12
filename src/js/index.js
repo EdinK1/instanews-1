@@ -9,7 +9,7 @@ const NYT_KEY =
 // DOM ready
 $(() => {
   const $body = $('body')
-  const $header = $body.find('header')
+  const $header = $body.find('.header')
   const $main = $body.find('main')
   const $sectionSelect = $('#section-select')
 
@@ -19,8 +19,10 @@ $(() => {
     alert('Please use a browser that supports HTML templates.')
 
   const loader = cloneTemplate('loader-template', '.loader')
-  const storyList = cloneTemplate('story-grid-template', 'ul')
-  storyList.classList.add('story_list')
+  const storyList = cloneTemplate(
+    'story-grid-template',
+    '.story-list',
+  )
 
   // TODO: check for section passed as query string
 

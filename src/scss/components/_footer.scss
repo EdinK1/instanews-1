@@ -2,6 +2,8 @@
   color: $text-light;
   margin: $pad-s $pad-l;
   height: $footer;
+  text-align: center;
+  justify-self: flex-end;
 
   @include desktop {
     margin-right: auto;

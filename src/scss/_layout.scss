@@ -1,11 +1,6 @@
-body {
+.layout {
   background-color: $ui;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-
-  footer {
-    text-align: center;
-    justify-self: flex-end;
-  }
 }
