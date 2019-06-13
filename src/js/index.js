@@ -7,13 +7,12 @@ import capitalize from './utils/capitalize'
 import setUrlQuery from './utils/setUrlQuery'
 import getUrlQuery from './utils/getUrlQuery'
 
+// check for template support
+if (!document.createElement('template').content)
+  import('./polyfills/template')
+
 // DOM ready
 $(() => {
-  // check for template compatibility
-  // TODO: fallback
-  if (!document.createElement('template').content)
-    alert('Please use a browser that supports HTML templates.')
-
   const $body = $('body')
   const $header = $body.find('.header')
   const $main = $body.find('main')

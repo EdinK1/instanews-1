@@ -36,6 +36,7 @@ function scripts() {
     .transform(
       babelify.configure({
         presets: ['@babel/preset-env'],
+        plugins: ['@babel/plugin-syntax-dynamic-import'],
       }),
     )
     .bundle()
@@ -80,5 +81,10 @@ gulp.task('build', gulp.series(public, scripts, scss))
 
 gulp.task(
   'default',
-  gulp.series(public, scripts, scss, gulp.parallel(initBrowser, watchFiles)),
+  gulp.series(
+    public,
+    scripts,
+    scss,
+    gulp.parallel(initBrowser, watchFiles),
+  ),
 )
