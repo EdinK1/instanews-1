@@ -7,7 +7,7 @@ import capitalize from './utils/capitalize'
 import setUrlQuery from './utils/setUrlQuery'
 import getUrlQuery from './utils/getUrlQuery'
 
-// check for template support
+// polyfill template support
 if (!document.createElement('template').content)
   import('./polyfills/template')
 
@@ -22,6 +22,7 @@ $(() => {
     'story-grid-template',
     '.story-list',
   )
+  const errorMessage = cloneTemplate('error-template', '.error')
 
   // TODO: shouldn't have to do this in JS
   $body.addClass('no-scroll')
@@ -37,20 +38,20 @@ $(() => {
     setUrlQuery('section', target.value)
     $main.append(loader)
 
-    return (
-      fetchTopStories(target.value)
-        .done(({results}) => {
-          storyList.innerHTML = null
-          $main.append(fillStoryList(results, storyList))
-        })
-        .always(() => {
-          loader.remove()
-          $header.addClass('closed')
-          $body.removeClass('no-scroll')
-        })
-        // TODO: show error
-        .fail(console.error)
-    )
+    return fetchTopStories(target.value)
+      .always(() => {
+        loader.remove()
+        $header.addClass('closed')
+        $body.removeClass('no-scroll')
+      })
+      .done(({results}) => {
+        storyList.innerHTML = null
+        $main.append(fillStoryList(results, storyList))
+      })
+      .fail(() => {
+        storyList.innerHTML = null
+        $main.append(errorMessage)
+      })
   })
 
   // check for section passed as query string
@@ -60,17 +61,16 @@ $(() => {
     $sectionSelect.val(section)
 
     // fetch based on query
-    return (
-      fetchTopStories(section)
-        .done(({results}) =>
-          $main.append(fillStoryList(results, storyList)),
-        )
-        .always(() => {
-          $header.addClass('closed')
-          $body.removeClass('no-scroll')
-        })
-        // TODO: show error
-        .fail(console.error)
-    )
+    return fetchTopStories(section)
+      .always(() => {
+        $header.addClass('closed')
+        $body.removeClass('no-scroll')
+      })
+      .done(({results}) =>
+        $main.append(fillStoryList(results, storyList)),
+      )
+      .fail(() => {
+        $main.append(errorMessage)
+      })
   }
 })
