@@ -1,9 +1,9 @@
 import SECTIONS from '../constants/sections'
-
+import fetchTopStories from './fetchTopStories'
+import makeSectionOption from './makeSectionOption'
+import fillStoryList from './fillStoryList'
 import cloneTemplate from './utils/cloneTemplate'
 import capitalize from './utils/capitalize'
-import fetchTopStories from './utils/fetchTopStories'
-import fillStoryList from './utils/fillStoryList'
 import setUrlQuery from './utils/setUrlQuery'
 import getUrlQuery from './utils/getUrlQuery'
 
@@ -18,30 +18,24 @@ $(() => {
   const $header = $body.find('.header')
   const $main = $body.find('main')
   const $sectionSelect = $('#section-select')
-
   const loader = cloneTemplate('loader-template', '.loader')
   const storyList = cloneTemplate(
     'story-grid-template',
     '.story-list',
   )
 
-  // fill select options
-  // TODO: use template
-  SECTIONS.forEach(s =>
-    $sectionSelect.append(
-      `<option value="${s}">
-        ${capitalize(s)}
-      </option>`,
-    ),
-  )
-
   // TODO: shouldn't have to do this in JS
   $body.addClass('no-scroll')
+
+  // fill select options
+  SECTIONS.map(makeSectionOption).forEach(el =>
+    $sectionSelect.append(el),
+  )
 
   $sectionSelect.on('change', ({target}) => {
     if (!target.value) return
 
-    setUrlQuery(target.value)
+    setUrlQuery('section', target.value)
     $main.append(loader)
 
     return (

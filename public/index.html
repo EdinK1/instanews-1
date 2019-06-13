@@ -7,6 +7,10 @@
   <title>instanews</title>
   <link rel="stylesheet" href="./css/index.min.css">
 
+  <template id="option-template">
+    <option class="section-form__option"></option>
+  </template>
+
   <template id="loader-template">
     <div class="loader">
       <img class="loader-img" src="./images/ajax-loader.gif" alt="Loading" />
@@ -45,7 +49,7 @@
       <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete -->
 
       <select class="section-form__select" id="section-select" required autofocus>
-        <option value="">
+        <option value="" class="section-form__option">
           Sections...
         </option>
       </select>

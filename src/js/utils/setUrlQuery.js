@@ -1,6 +1,6 @@
-// add section as query param w/o reload
-export default query => {
+// add query param w/o reload
+export default (key, value) => {
   if (window.history.pushState)
     // FIXME: breaks browser back btn
-    window.history.pushState({}, null, `?section=${query}`)
+    window.history.pushState({}, null, `?${key}=${value}`)
 }
