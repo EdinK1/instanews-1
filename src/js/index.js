@@ -1,9 +1,13 @@
+import Loader from './components/Loader'
+import StoryList from './components/StoryList'
+import StoryListItem from './components/StoryListItem'
+import ErrorMessage from './components/ErrorMessage'
+import SectionOption from './components/SectionOption'
+
 import SECTIONS from '../constants/sections'
-import fetchTopStories from './fetchTopStories'
-import makeSectionOption from './makeSectionOption'
-import fillStoryList from './fillStoryList'
-import cloneTemplate from './utils/cloneTemplate'
-import capitalize from './utils/capitalize'
+import NYT_KEY from '../constants/nyt-key'
+import NYT_BASE_URL from '../constants/nyt-base-url'
+
 import setUrlQuery from './utils/setUrlQuery'
 import getUrlQuery from './utils/getUrlQuery'
 
@@ -17,18 +21,16 @@ $(() => {
   const $header = $body.find('.header')
   const $main = $body.find('main')
   const $sectionSelect = $('#section-select')
-  const loader = cloneTemplate('loader-template', '.loader')
-  const storyList = cloneTemplate(
-    'story-grid-template',
-    '.story-list',
-  )
-  const errorMessage = cloneTemplate('error-template', '.error')
+
+  const loader = new Loader()
+  const storyList = new StoryList()
+  const errorMessage = new ErrorMessage()
 
   // TODO: shouldn't have to do this in JS
   $body.addClass('no-scroll')
 
   // fill select options
-  SECTIONS.map(makeSectionOption).forEach(el =>
+  SECTIONS.map(val => new SectionOption(val).el).forEach(el =>
     $sectionSelect.append(el),
   )
 
@@ -36,22 +38,8 @@ $(() => {
     if (!target.value) return
 
     setUrlQuery('section', target.value)
-    $main.append(loader)
-
-    return fetchTopStories(target.value)
-      .always(() => {
-        loader.remove()
-        $header.addClass('closed')
-        $body.removeClass('no-scroll')
-      })
-      .done(({results}) => {
-        storyList.innerHTML = null
-        $main.append(fillStoryList(results, storyList))
-      })
-      .fail(() => {
-        storyList.innerHTML = null
-        $main.append(errorMessage)
-      })
+    $main.append(loader.el)
+    return fetchAndFillStories(target.value)
   })
 
   // check for section passed as query string
@@ -59,18 +47,31 @@ $(() => {
 
   if (section && SECTIONS.includes(section)) {
     $sectionSelect.val(section)
+    $main.append(loader.el)
+    return fetchAndFillStories(section)
+  }
 
-    // fetch based on query
-    return fetchTopStories(section)
+  function fetchAndFillStories(section) {
+    return $.ajax(
+      `${NYT_BASE_URL}/${section}.json?api-key=${NYT_KEY}`,
+    )
       .always(() => {
+        loader.el.remove()
         $header.addClass('closed')
         $body.removeClass('no-scroll')
       })
-      .done(({results}) =>
-        $main.append(fillStoryList(results, storyList)),
-      )
-      .fail(() => {
-        $main.append(errorMessage)
+      .done(({results}) => {
+        storyList.clear()
+        results
+          // has image
+          .filter(d => d.multimedia[4])
+          // limit to 12 stories
+          .slice(0, 12)
+          .forEach(d =>
+            storyList.el.appendChild(new StoryListItem(d).el),
+          ),
+          $main.append(storyList.el)
       })
+      .fail(() => $main.append(errorMessage.el))
   }
 })
