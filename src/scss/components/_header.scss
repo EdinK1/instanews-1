@@ -1,5 +1,5 @@
 .header {
-  min-height: calc(#{100vh} - #{$footer});
+  flex-grow: 1;
   padding: $pad;
   display: flex;
   flex-direction: column;
@@ -8,7 +8,22 @@
   transition: min-height 0.6s ease-in-out;
 
   &.closed {
-    min-height: 0;
+    min-height: unset;
+
+    .header__logo {
+      width: 165px;
+
+      @include tablet {
+        width: 100px;
+        margin-left: -180px;
+        margin-right: 80px;
+      }
+
+      @include desktop {
+        margin-left: 0;
+        margin-right: 80px;
+      }
+    }
   }
 
   @include tablet {
@@ -17,5 +32,16 @@
 
   @include desktop {
     margin-right: auto;
+  }
+}
+
+.header__logo {
+  width: 275px;
+  min-width: 100px;
+  transition: width 0.4s ease-in-out, margin-right 0.4s ease-in-out;
+  margin: $pad-s;
+
+  @include tablet {
+    margin-left: unset;
   }
 }

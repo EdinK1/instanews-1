@@ -4,8 +4,9 @@
 
 .section-form__label {
   display: block;
+  whitespace: nowrap;
 }
 
 .section-form__select {
-  margin: $pad-s;
+  margin-top: $pad-s;
 }

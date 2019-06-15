@@ -26,9 +26,6 @@ $(() => {
   const storyList = new StoryList()
   const errorMessage = new ErrorMessage()
 
-  // TODO: shouldn't have to do this in JS
-  $body.addClass('no-scroll')
-
   // fill select options
   SECTIONS.map(val => new SectionOption(val).el).forEach(el =>
     $sectionSelect.append(el),
@@ -58,7 +55,6 @@ $(() => {
       .always(() => {
         loader.el.remove()
         $header.addClass('closed')
-        $body.removeClass('no-scroll')
       })
       .done(({results}) => {
         storyList.clear()
