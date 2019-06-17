@@ -18,7 +18,7 @@ $story-list__transition-delay: 0.2s;
   list-style: none;
   background-size: cover;
   background-position: center;
-  // fixe auto scroll on hover
+  // fixes auto scroll on hover
   // !important needed for chrome & opera
   overflow: hidden !important;
 
@@ -45,8 +45,8 @@ $story-list__transition-delay: 0.2s;
 }
 
 .story-list__title {
+  @include open-sans-bold;
   background-color: rgba(0, 0, 0, 0.4);
-  font-weight: bold;
   padding: $spacing-s;
   transition: background-color $story-list__transition
     $story-list__transition-delay ease-in-out;

@@ -6,6 +6,24 @@
   font-style: normal;
 }
 
+@mixin open-sans-light-italic {
+  font-family: 'Open Sans';
+  font-weight: 300;
+  font-style: italic;
+}
+
+@mixin open-sans-bold {
+  font-family: 'Open Sans';
+  font-weight: bold;
+  font-style: normal;
+}
+
+@mixin open-sans-bold-italic {
+  font-family: 'Open Sans';
+  font-weight: bold;
+  font-style: italic;
+}
+
 html {
   @include open-sans-light;
   font-size: $font-size;
