@@ -1,6 +1,6 @@
 .header {
   flex-grow: 1;
-  padding: $pad;
+  padding: $spacing;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,7 +39,7 @@
   width: 275px;
   min-width: 100px;
   transition: width 0.4s ease-in-out, margin-right 0.4s ease-in-out;
-  margin: $pad-s;
+  margin: $spacing-s;
 
   @include tablet {
     margin-left: unset;
