@@ -24,6 +24,27 @@ The URL query string is updated with the active section selection allowing navig
 
 Project styles are written with SASS using the SCSS (Sassy CSS) syntax.
 
+## Project Structure
+
+Building the site copies contents of static/, transpiles and minifies JS code in src/js/ and compiles SCSS files to dist/.
+
+```
+.
++-- src
+|   +-- js
+|       +-- components
+|       +-- utils
+|       +-- polyfills
+|   +-- scss
+|   +-- constants
++-- public
+|   +-- images
+|   +-- fonts
+|   +-- index.html
++-- dist
++-- gulpfile.js
+```
+
 ## Development
 
 Install dependencies by running `npm i`. After that, run `npm start` to start a gulp process to build the site to dist/ and serves it up on a dev server. The gulp process will watch project files to rebuild files and reload browser on change.
