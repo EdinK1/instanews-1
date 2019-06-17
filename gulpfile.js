@@ -16,7 +16,7 @@ function initBrowser() {
   console.log('Initializing browser sync')
   return browserSync.init({
     server: {
-      baseDir: './docs',
+      baseDir: './dist',
     },
   })
 }
@@ -43,12 +43,12 @@ function scripts() {
     .pipe(sourceStream('index.js'))
     .pipe(streamify(uglify()))
     .pipe(rename({extname: '.min.js'}))
-    .pipe(gulp.dest('./docs/js'))
+    .pipe(gulp.dest('./dist/js'))
 }
 
 function public() {
-  console.log('Copying `public` files to `docs`')
-  return gulp.src('public/**').pipe(gulp.dest('docs'))
+  console.log('Copying `public` files to `dist`')
+  return gulp.src('public/**').pipe(gulp.dest('dist'))
 }
 
 function scss() {
@@ -66,7 +66,7 @@ function scss() {
     .pipe(cssnano())
     .pipe(rename('index.min.css'))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('docs/css'))
+    .pipe(gulp.dest('dist/css'))
 }
 
 function watchFiles() {
