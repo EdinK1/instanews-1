@@ -8,6 +8,7 @@ import SECTIONS from '../constants/sections'
 import NYT_KEY from '../constants/nyt-key'
 import NYT_BASE_URL from '../constants/nyt-base-url'
 
+import loadImg from './utils/loadImg'
 import setUrlQuery from './utils/setUrlQuery'
 import getUrlQuery from './utils/getUrlQuery'
 
@@ -52,22 +53,32 @@ $(() => {
     return $.ajax(
       `${NYT_BASE_URL}/${section}.json?api-key=${NYT_KEY}`,
     )
-      .always(() => {
-        loader.el.remove()
-        $header.addClass('closed')
-      })
+      .always(() => {})
       .done(({results}) => {
-        storyList.clear()
-        results
+        const relevantResults = results
           // has image
           .filter(d => d.multimedia[4])
           // limit to 12 stories
           .slice(0, 12)
-          .forEach(d =>
+
+        const loadingImgs = relevantResults.map(d =>
+          loadImg(d.multimedia[4].url),
+        )
+        Promise.all(loadingImgs).then(() => {
+          loader.el.remove()
+          $header.addClass('closed')
+          storyList.clear()
+          relevantResults.forEach(d =>
             storyList.el.appendChild(new StoryListItem(d).el),
-          ),
+          )
           $main.append(storyList.el)
+        })
       })
-      .fail(() => $main.append(errorMessage.el))
+      .fail(() => {
+        loader.el.remove()
+        $header.addClass('closed')
+        storyList.clear()
+        $main.append(errorMessage.el)
+      })
   }
 })
